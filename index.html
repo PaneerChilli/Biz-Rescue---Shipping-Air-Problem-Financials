@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shipping Air — Financial Model | Black Cats DBE | IIM Bangalore</title>
+<link rel="icon" type="image/png" href="favicon.png.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --ink: #0D0D0D;
+    --paper: #F5F0E8;
+    --cream: #EDE8DC;
+    --accent: #C8391A;
+    --accent2: #1A6BC8;
+    --gold: #D4960A;
+    --green: #1A7A4A;
+    --purple: #5C2E9A;
+    --border: #2A2A2A;
+    --muted: #6B6560;
+    --card: #FAFAF5;
+    --mono: 'DM Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .masthead {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid var(--accent);
+  }
+  .masthead-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 28px 48px 20px;
+    gap: 24px;
+  }
+  .masthead-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .masthead-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    line-height: 0.92;
+    letter-spacing: 1px;
+    color: var(--paper);
+  }
+  .masthead-title span { color: var(--accent); }
+  .masthead-sub {
+    font-size: 13px;
+    color: rgba(245,240,232,0.55);
+    margin-top: 10px;
+    font-family: var(--mono);
+    letter-spacing: 1px;
+  }
+  .masthead-badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 14px 20px;
+    text-align: center;
+    min-width: 120px;
+    border-radius: 4px;
+  }
+  .masthead-badge .big { font-family: 'Bebas Neue', sans-serif; font-size: 44px; line-height: 1; }
+  .masthead-badge .small { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }
+  .ticker {
+    background: var(--accent);
+    padding: 6px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 28s linear infinite;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #fff;
+    letter-spacing: 2px;
+  }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 1200px; margin: 0 auto; padding: 40px 32px 80px; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+  .section-desc {
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 600px;
+    margin-bottom: 32px;
+  }
+  .divider { border: none; border-top: 1.5px solid var(--border); margin: 48px 0; }
+  .divider-light { border: none; border-top: 1px solid rgba(0,0,0,0.1); margin: 24px 0; }
+
+  /* ── HERO METRICS ── */
+  .hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .hero-metric {
+    padding: 24px 20px;
+    border-right: 1.5px solid var(--border);
+    background: var(--card);
+    position: relative;
+  }
+  .hero-metric:last-child { border-right: none; }
+  .hero-metric .hm-label { font-family: var(--mono); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .hero-metric .hm-value { font-family: 'Bebas Neue', sans-serif; font-size: 48px; line-height: 1; color: var(--ink); }
+  .hero-metric .hm-value.accent { color: var(--accent); }
+  .hero-metric .hm-value.green { color: var(--green); }
+  .hero-metric .hm-value.blue { color: var(--accent2); }
+  .hero-metric .hm-value.gold { color: var(--gold); }
+  .hero-metric .hm-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .hero-metric .hm-change {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    margin-top: 8px;
+    padding: 3px 7px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .hm-change.up { background: rgba(26,122,74,0.1); color: var(--green); }
+  .hm-change.down { background: rgba(200,57,26,0.1); color: var(--accent); }
+
+  /* ── CARICATURE SECTION ── */
+  .caricature-strip {
+    display: flex;
+    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    background: var(--ink);
+  }
+  .caricature-panel {
+    flex: 1;
+    padding: 24px 18px 20px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .caricature-panel:last-child { border-right: none; }
+  .caricature-svg { margin-bottom: 12px; }
+  .caricature-name { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--paper); letter-spacing: 1px; }
+  .caricature-title { font-family: var(--mono); font-size: 9px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .caricature-quote { font-size: 12px; color: rgba(245,240,232,0.65); line-height: 1.5; font-style: italic; }
+  .caricature-stat { margin-top: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); }
+  .caricature-stat-label { font-family: var(--mono); font-size: 9px; color: rgba(245,240,232,0.5); letter-spacing: 1px; }
+
+  /* ── WATERFALL CHART ── */
+  .chart-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .chart-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .chart-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .chart-tag {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  /* ── ROI TABLE ── */
+  .roi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .roi-table th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border: none;
+  }
+  .roi-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    vertical-align: top;
+  }
+  .roi-table tr:last-child td { border-bottom: none; }
+  .roi-table tr:hover td { background: var(--cream); }
+  .roi-table .num { font-family: var(--mono); font-weight: 500; text-align: right; }
+  .roi-table .highlight { font-weight: 600; color: var(--green); }
+  .roi-table .neg { color: var(--accent); }
+  .roi-table .total-row td { background: var(--cream); font-weight: 600; border-top: 2px solid var(--border); }
+
+  /* ── PHASE TIMELINE ── */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .phase-card {
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .phase-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .phase-header.p1 { background: var(--accent); color: #fff; }
+  .phase-header.p2 { background: var(--accent2); color: #fff; }
+  .phase-header.p3 { background: var(--green); color: #fff; }
+  .phase-num { font-family: 'Bebas Neue', sans-serif; font-size: 32px; line-height: 1; opacity: 0.35; }
+  .phase-name { font-weight: 600; font-size: 14px; }
+  .phase-duration { font-family: var(--mono); font-size: 10px; opacity: 0.8; }
+  .phase-body { background: var(--card); padding: 16px 18px; }
+  .phase-kpi { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px; }
+  .phase-kpi-val { font-family: var(--mono); font-weight: 500; }
+  .phase-actions { margin-top: 12px; }
+  .phase-action {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 12px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .phase-action::before {
+    content: '→';
+    color: var(--accent);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── LAYER BREAKDOWN ── */
+  .layer-stack {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .layer-card {
+    border-radius: 6px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .layer-card.l1 { background: #EEF5FF; border: 1.5px solid var(--accent2); }
+  .layer-card.l2 { background: #FFF5EE; border: 1.5px solid var(--gold); }
+  .layer-card.l3 { background: #EEFFF5; border: 1.5px solid var(--green); }
+  .layer-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    opacity: 0.07;
+    line-height: 1;
+  }
+  .layer-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .l1 .layer-badge { background: var(--accent2); color: #fff; }
+  .l2 .layer-badge { background: var(--gold); color: #fff; }
+  .l3 .layer-badge { background: var(--green); color: #fff; }
+  .layer-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+  .layer-waste { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 12px; }
+  .layer-impact { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 1; margin-bottom: 2px; }
+  .l1 .layer-impact { color: var(--accent2); }
+  .l2 .layer-impact { color: var(--gold); }
+  .l3 .layer-impact { color: var(--green); }
+  .layer-impact-label { font-size: 11px; color: var(--muted); }
+  .layer-bar-bg { background: rgba(0,0,0,0.08); height: 5px; border-radius: 3px; margin-top: 14px; }
+  .layer-bar { height: 5px; border-radius: 3px; }
+  .l1 .layer-bar { background: var(--accent2); }
+  .l2 .layer-bar { background: var(--gold); }
+  .l3 .layer-bar { background: var(--green); }
+
+  /* ── ESG PANEL ── */
+  .esg-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .esg-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 6px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .esg-icon { font-size: 28px; margin-bottom: 10px; }
+  .esg-label { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: rgba(245,240,232,0.5); margin-bottom: 6px; }
+  .esg-value { font-family: 'Bebas Neue', sans-serif; font-size: 38px; line-height: 1; margin-bottom: 4px; }
+  .esg-value.g { color: var(--gold); }
+  .esg-value.b { color: #60A5FA; }
+  .esg-value.r { color: #F87171; }
+  .esg-desc { font-size: 11px; color: rgba(245,240,232,0.6); line-height: 1.5; }
+
+  /* ── TECH STACK ── */
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  .tech-table th {
+    background: var(--purple);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .tech-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    vertical-align: top;
+  }
+  .tech-table tr:hover td { background: #F0EDF8; }
+  .tech-table tr:last-child td { border-bottom: none; }
+  .tech-pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--cream);
+    border: 1px solid rgba(0,0,0,0.12);
+    margin: 1px 2px;
+    color: var(--ink);
+  }
+  .tech-pill.hot { background: #FEF3C7; border-color: var(--gold); color: #92400E; }
+  .tech-pill.cool { background: #DBEAFE; border-color: var(--accent2); color: #1E3A5F; }
+  .tech-pill.go { background: #D1FAE5; border-color: var(--green); color: #064E3B; }
+
+  /* ── SENSITIVITY TABLE ── */
+  .sens-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.5);
+    padding: 24px 48px;
+    font-family: var(--mono);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 48px;
+    border-top: 4px solid var(--accent);
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    .hero-metrics { grid-template-columns: 1fr 1fr; }
+    .layer-stack, .phase-grid, .esg-panel { grid-template-columns: 1fr; }
+    .masthead-title { font-size: 40px; }
+    .caricature-strip { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <div class="masthead-eyebrow">BizRescue · NIT Raipur E-Summit '26 · National Case Competition</div>
+      <div class="masthead-title">SHIPPING<br/><span>AIR</span><br/>FINANCIAL MODEL</div>
+      <div class="masthead-sub">Team: Black Cats DBE · IIM Bangalore · Supply Chain & Logistics Track</div>
+    </div>
+    <div style="text-align:right">
+      <div class="masthead-badge">
+        <div class="big">18</div>
+        <div class="small">Month<br/>Payback</div>
+      </div>
+      <div style="margin-top:12px; background:rgba(255,255,255,0.06); padding:10px 14px; border-radius:4px; border:1px solid rgba(255,255,255,0.12)">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:rgba(245,240,232,0.5);margin-bottom:4px">NPV (3-YR)</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:#60D090;line-height:1">$9–11M</div>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span class="ticker-inner">
+      CONTAINER UTILISATION 75% → 95% &nbsp;·&nbsp; ANNUAL SAVINGS $20–25M &nbsp;·&nbsp; ROI 340–420% &nbsp;·&nbsp; PAYBACK 7–9 MONTHS &nbsp;·&nbsp; CO₂ AVOIDED 2,940T ANNUALLY &nbsp;·&nbsp; EBITDA UPLIFT $4–5M &nbsp;·&nbsp; CBAM REDUCTION $120–200K/YR &nbsp;·&nbsp; CONTAINERS ELIMINATED 1,176/YR &nbsp;·&nbsp; FREIGHT SPEND $20M BASELINE &nbsp;·&nbsp; GROSS MARGIN +0.8–1.2PP &nbsp;·&nbsp;
+      CONTAINER UTILISATION 75% → 95% &nbsp;·&nbsp; ANNUAL SAVINGS $20–25M &nbsp;·&nbsp; ROI 340–420% &nbsp;·&nbsp; PAYBACK 7–9 MONTHS &nbsp;·&nbsp; CO₂ AVOIDED 2,940T ANNUALLY &nbsp;·&nbsp; EBITDA UPLIFT $4–5M &nbsp;·&nbsp; CBAM REDUCTION $120–200K/YR &nbsp;·&nbsp; CONTAINERS ELIMINATED 1,176/YR &nbsp;·&nbsp; FREIGHT SPEND $20M BASELINE &nbsp;·&nbsp; GROSS MARGIN +0.8–1.2PP &nbsp;·&nbsp;
+    </span>
+  </div>
+</header>
+
+<main class="page">
+
+  <!-- ── SECTION 1: HERO METRICS ── -->
+  <div class="fade-up" style="margin-bottom:36px">
+    <div class="section-label">01 — Executive Summary</div>
+    <div class="section-title">Value at a Glance</div>
+    <div class="section-desc">Full financial impact of the 3-layer closed-loop optimization system deployed over 18 months across a $20M freight baseline (10,000 TEUs × $2,000/container).</div>
+  </div>
+
+  <div class="hero-metrics fade-up">
+    <div class="hero-metric">
+      <div class="hm-label">Annual freight savings</div>
+      <div class="hm-value accent">$2.35M</div>
+      <div class="hm-sub">At +10% utilisation · 1,176 containers eliminated</div>
+      <div class="hm-change up">↑ Phase 2 target</div>
+    </div>
+    <div class="hero-metric">
+      <div class="hm-label">Full-scale savings potential</div>
+      <div class="hm-value green">$25M</div>
+      <div class="hm-sub">Upper bound · 92–95% network utilisation</div>
+      <div class="hm-change up">↑ +$20M floor</div>
+    </div>
+    <div class="hero-metric">
+      <div class="hm-label">18-month ROI</div>
+      <div class="hm-value blue">420%</div>
+      <div class="hm-sub">Savings vs. total system investment of $1.2–1.4M</div>
+      <div class="hm-change up">↑ 340% floor</div>
+    </div>
+    <div class="hero-metric">
+      <div class="hm-label">3-year NPV</div>
+      <div class="hm-value gold">$11M</div>
+      <div class="hm-sub">At 10% discount rate · Upper bound</div>
+      <div class="hm-change up">↑ $9M floor</div>
+    </div>
+  </div>
+
+  <!-- CARICATURE STRIP -->
+  <div class="caricature-strip fade-up">
+    <!-- The CFO -->
+    <div class="caricature-panel">
+      <svg class="caricature-svg" width="80" height="90" viewBox="0 0 80 90">
+        <!-- CFO caricature: big glasses, suit, holding spreadsheet -->
+        <circle cx="40" cy="28" r="22" fill="#F5CBA7" stroke="#2A2A2A" stroke-width="1.5"/>
+        <!-- Hair -->
+        <ellipse cx="40" cy="10" rx="18" ry="8" fill="#2A2A2A"/>
+        <!-- Big glasses -->
+        <rect x="18" y="24" width="16" height="10" rx="5" fill="none" stroke="#60A5FA" stroke-width="2"/>
+        <rect x="46" y="24" width="16" height="10" rx="5" fill="none" stroke="#60A5FA" stroke-width="2"/>
+        <line x1="34" y1="29" x2="46" y2="29" stroke="#60A5FA" stroke-width="2"/>
+        <!-- Nose -->
+        <ellipse cx="40" cy="36" rx="3" ry="2" fill="#E8A87C"/>
+        <!-- Smile -->
+        <path d="M34 41 Q40 47 46 41" fill="none" stroke="#2A2A2A" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Suit -->
+        <path d="M14 90 Q20 55 40 52 Q60 55 66 90Z" fill="#1A2E4A"/>
+        <path d="M40 52 L35 70 L40 65 L45 70Z" fill="#F5F0E8"/>
+        <!-- Tie -->
+        <path d="M40 52 L38 68 L40 72 L42 68Z" fill="#C8391A"/>
+        <!-- Arms holding paper -->
+        <rect x="58" y="62" width="20" height="16" rx="2" fill="#F5F0E8" stroke="#2A2A2A" stroke-width="1"/>
+        <line x1="60" y1="66" x2="76" y2="66" stroke="#1A6BC8" stroke-width="1"/>
+        <line x1="60" y1="69" x2="76" y2="69" stroke="#1A6BC8" stroke-width="1"/>
+        <line x1="60" y1="72" x2="70" y2="72" stroke="#C8391A" stroke-width="1"/>
+      </svg>
+      <div class="caricature-name">CFO's View</div>
+      <div class="caricature-title">Financial Controller</div>
+      <div class="caricature-quote">"The numbers are undeniable. $2,000 per container, 10,000 TEUs — that's $20M we can systematically reduce."</div>
+      <div class="caricature-stat">340–420%</div>
+      <div class="caricature-stat-label">18-Month ROI</div>
+    </div>
+
+    <!-- The Operations Lead -->
+    <div class="caricature-panel">
+      <svg class="caricature-svg" width="80" height="90" viewBox="0 0 80 90">
+        <!-- Ops caricature: hard hat, clipboard, muscular look -->
+        <circle cx="40" cy="30" r="22" fill="#D4A574" stroke="#2A2A2A" stroke-width="1.5"/>
+        <!-- Hard hat -->
+        <ellipse cx="40" cy="14" rx="22" ry="10" fill="#D4960A"/>
+        <rect x="18" y="20" width="44" height="6" rx="3" fill="#B8820A"/>
+        <!-- Eyes -->
+        <circle cx="32" cy="30" r="4" fill="white" stroke="#2A2A2A" stroke-width="1"/>
+        <circle cx="48" cy="30" r="4" fill="white" stroke="#2A2A2A" stroke-width="1"/>
+        <circle cx="33" cy="30" r="2" fill="#2A2A2A"/>
+        <circle cx="49" cy="30" r="2" fill="#2A2A2A"/>
+        <!-- Determined expression -->
+        <path d="M33 40 L47 40" stroke="#2A2A2A" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Nose -->
+        <ellipse cx="40" cy="36" rx="3" ry="2" fill="#C4946A"/>
+        <!-- Body / vest -->
+        <path d="M14 90 Q20 55 40 52 Q60 55 66 90Z" fill="#F59E0B"/>
+        <!-- Hi-vis stripes -->
+        <line x1="20" y1="70" x2="60" y2="70" stroke="#2A2A2A" stroke-width="2" stroke-dasharray="4,4"/>
+        <!-- Clipboard -->
+        <rect x="55" y="58" width="20" height="24" rx="2" fill="#F5F0E8" stroke="#2A2A2A" stroke-width="1"/>
+        <rect x="58" y="54" width="14" height="6" rx="2" fill="#2A2A2A"/>
+        <line x1="57" y1="65" x2="73" y2="65" stroke="#C8391A" stroke-width="1.2"/>
+        <line x1="57" y1="69" x2="73" y2="69" stroke="#2A2A2A" stroke-width="0.8"/>
+        <line x1="57" y1="73" x2="68" y2="73" stroke="#2A2A2A" stroke-width="0.8"/>
+      </svg>
+      <div class="caricature-name">Ops Director</div>
+      <div class="caricature-title">Head of Logistics</div>
+      <div class="caricature-quote">"75% utilisation means we're shipping 25% air. Every partial container is cash burning on a slow boat."</div>
+      <div class="caricature-stat">1,176</div>
+      <div class="caricature-stat-label">Containers Eliminated/yr</div>
+    </div>
+
+    <!-- The Data Scientist -->
+    <div class="caricature-panel">
+      <svg class="caricature-svg" width="80" height="90" viewBox="0 0 80 90">
+        <!-- Data scientist: big hair, laptop, nerdy -->
+        <circle cx="40" cy="30" r="22" fill="#F5CBA7" stroke="#2A2A2A" stroke-width="1.5"/>
+        <!-- Curly hair -->
+        <circle cx="25" cy="16" r="8" fill="#1A2A1A"/>
+        <circle cx="35" cy="10" r="9" fill="#1A2A1A"/>
+        <circle cx="47" cy="10" r="9" fill="#1A2A1A"/>
+        <circle cx="56" cy="16" r="8" fill="#1A2A1A"/>
+        <!-- Eyes - wide/excited -->
+        <circle cx="32" cy="28" r="5" fill="white" stroke="#2A2A2A" stroke-width="1"/>
+        <circle cx="48" cy="28" r="5" fill="white" stroke="#2A2A2A" stroke-width="1"/>
+        <circle cx="33" cy="28" r="2.5" fill="#1A4A8A"/>
+        <circle cx="49" cy="28" r="2.5" fill="#1A4A8A"/>
+        <!-- Excited smile -->
+        <path d="M32 40 Q40 48 48 40" fill="none" stroke="#2A2A2A" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Hoodie -->
+        <path d="M14 90 Q20 55 40 52 Q60 55 66 90Z" fill="#2A2A6A"/>
+        <!-- Laptop -->
+        <rect x="12" y="62" width="26" height="18" rx="2" fill="#1A2A3A" stroke="#2A2A2A" stroke-width="1"/>
+        <rect x="14" y="64" width="22" height="14" rx="1" fill="#0A1628"/>
+        <!-- Screen content -->
+        <line x1="15" y1="67" x2="35" y2="67" stroke="#00FF88" stroke-width="0.8" opacity="0.8"/>
+        <line x1="15" y1="69" x2="30" y2="69" stroke="#60A5FA" stroke-width="0.8" opacity="0.8"/>
+        <line x1="15" y1="71" x2="33" y2="71" stroke="#F59E0B" stroke-width="0.8" opacity="0.8"/>
+        <line x1="15" y1="73" x2="28" y2="73" stroke="#00FF88" stroke-width="0.8" opacity="0.8"/>
+        <rect x="10" y="79" width="30" height="3" rx="1" fill="#2A2A2A"/>
+      </svg>
+      <div class="caricature-name">AI Engineer</div>
+      <div class="caricature-title">3D Packing Algorithm</div>
+      <div class="caricature-quote">"The 3D bin-packing engine trains on every load. By month 6, it's seen enough void patterns to hit 92%+ autonomously."</div>
+      <div class="caricature-stat">90 DAYS</div>
+      <div class="caricature-stat-label">To 90%+ Utilisation</div>
+    </div>
+
+    <!-- The Sustainability Lead -->
+    <div class="caricature-panel">
+      <svg class="caricature-svg" width="80" height="90" viewBox="0 0 80 90">
+        <!-- Sustainability: leaf motif, scarf, idealistic -->
+        <circle cx="40" cy="30" r="22" fill="#D4A574" stroke="#2A2A2A" stroke-width="1.5"/>
+        <!-- Hair - bun -->
+        <ellipse cx="40" cy="12" rx="15" ry="10" fill="#8B4513"/>
+        <circle cx="40" cy="8" r="7" fill="#8B4513"/>
+        <!-- Eyes - bright/hopeful -->
+        <circle cx="32" cy="28" r="4" fill="white" stroke="#2A2A2A" stroke-width="1"/>
+        <circle cx="48" cy="28" r="4" fill="white" stroke="#2A2A2A" stroke-width="1"/>
+        <circle cx="33" cy="29" r="2" fill="#1A7A4A"/>
+        <circle cx="49" cy="29" r="2" fill="#1A7A4A"/>
+        <!-- Big smile -->
+        <path d="M31 39 Q40 48 49 39" fill="none" stroke="#2A2A2A" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Scarf -->
+        <path d="M22 50 Q40 60 58 50" fill="#1A7A4A" stroke="#2A2A2A" stroke-width="1"/>
+        <!-- Body -->
+        <path d="M14 90 Q20 55 40 52 Q60 55 66 90Z" fill="#166534"/>
+        <!-- Leaf in hand -->
+        <ellipse cx="62" cy="68" rx="10" ry="14" fill="#1A7A4A" stroke="#2A2A2A" stroke-width="1" transform="rotate(-20 62 68)"/>
+        <line x1="62" y1="78" x2="62" y2="60" stroke="#2A2A2A" stroke-width="1" transform="rotate(-20 62 68)"/>
+      </svg>
+      <div class="caricature-name">ESG Lead</div>
+      <div class="caricature-title">Sustainability Officer</div>
+      <div class="caricature-quote">"2,940 tonnes CO₂ avoided annually. CBAM is coming — being early isn't green-washing, it's competitive moat."</div>
+      <div class="caricature-stat">2,940T</div>
+      <div class="caricature-stat-label">CO₂ Avoided / Year</div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- ── SECTION 2: WATERFALL CHART ── -->
+  <div class="fade-up" style="margin-bottom:24px">
+    <div class="section-label">02 — Revenue Impact Model</div>
+    <div class="section-title">Savings Waterfall</div>
+    <div class="section-desc">How each layer of the system converts the $20M freight spend into net savings, validating McKinsey's 5–20% AI logistics benchmark.</div>
+  </div>
+
+  <div class="chart-card fade-up">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">Comprehensive Savings Waterfall ($M)</div>
+        <div class="chart-subtitle">From gross freight spend to net annual cost after all system interventions</div>
+      </div>
+      <div class="chart-tag">McKINSEY VALIDATED · 5–20% AI BENCHMARK</div>
+    </div>
+    <div style="position:relative;width:100%;height:320px">
+      <canvas id="waterfallChart"></canvas>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:16px;font-size:11px;font-family:var(--mono)">
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#C8391A;border-radius:2px;display:inline-block"></span>Baseline spend</span>
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#1A7A4A;border-radius:2px;display:inline-block"></span>Savings layer</span>
+      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;background:#D4960A;border-radius:2px;display:inline-block"></span>Net cost</span>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: LAYER BREAKDOWN ── -->
+  <hr class="divider"/>
+  <div class="fade-up" style="margin-bottom:24px">
+    <div class="section-label">03 — Root Cause → Financial Impact</div>
+    <div class="section-title">Per-Layer ROI Breakdown</div>
+    <div class="section-desc">Each layer attacks a specific waste source. Percentages represent share of total "Shipping Air" waste each layer eliminates.</div>
+  </div>
+
+  <div class="layer-stack fade-up">
+    <div class="layer-card l1">
+      <div class="layer-num">L1</div>
+      <div class="layer-badge">Demand Intelligence</div>
+      <div class="layer-title">Demand Sensing + Flexible Contracts</div>
+      <div class="layer-waste">Tackles: Demand variability (15%) + Contractual rigidity (10%) = 25% of waste</div>
+      <div class="layer-impact">$0.6M</div>
+      <div class="layer-impact-label">Annual savings contribution</div>
+      <div class="layer-bar-bg"><div class="layer-bar" style="width:25%"></div></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">4–6 week order forecasting · 30–40% fewer partial loads · Booking window alignment</div>
+    </div>
+    <div class="layer-card l2">
+      <div class="layer-num">L2</div>
+      <div class="layer-badge">Design Optimisation</div>
+      <div class="layer-title">SKU Audit + Packaging Redesign</div>
+      <div class="layer-waste">Tackles: Product geometry (35%) = 35% of waste</div>
+      <div class="layer-impact">$1.4M</div>
+      <div class="layer-impact-label">Annual savings contribution</div>
+      <div class="layer-bar-bg"><div class="layer-bar" style="width:35%"></div></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">IKEA principle: 15%+ units/pallet · Removes geometric ceiling at ~85%</div>
+    </div>
+    <div class="layer-card l3">
+      <div class="layer-num">L3</div>
+      <div class="layer-badge">AI Load Optimisation</div>
+      <div class="layer-title">3D Packing Engine + ERP Integration</div>
+      <div class="layer-waste">Tackles: Planning failure (40%) = Highest ROI layer</div>
+      <div class="layer-impact">$2.0M</div>
+      <div class="layer-impact-label">Annual savings contribution · Fastest to deploy</div>
+      <div class="layer-bar-bg"><div class="layer-bar" style="width:40%"></div></div>
+      <div style="margin-top:10px;font-size:11px;color:var(--muted)">Real-time 3D simulation · ERP/TMS integration · 90%+ util. in under 90 days</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: ROI TABLE ── -->
+  <hr class="divider"/>
+  <div class="fade-up" style="margin-bottom:24px">
+    <div class="section-label">04 — Detailed Financial Model</div>
+    <div class="section-title">Investment vs. Returns</div>
+    <div class="section-desc">Full P&L impact model across 18-month deployment horizon with 3-year NPV projection.</div>
+  </div>
+
+  <div class="sens-grid fade-up">
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-header" style="margin-bottom:16px">
+        <div>
+          <div class="chart-title" style="font-size:17px">ROI & Payback Analysis</div>
+          <div class="chart-subtitle">Total investment $1.2–1.4M (tech + design + commercial)</div>
+        </div>
+      </div>
+      <table class="roi-table">
+        <thead>
+          <tr><th>Metric</th><th style="text-align:right">Value</th><th style="text-align:right">Basis</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Total freight spend (baseline)</td><td class="num">$20M / yr</td><td class="num" style="color:var(--muted)">10K TEUs × $2K</td></tr>
+          <tr><td>Annual cost of "Shipping Air"</td><td class="num neg">$5M / yr</td><td class="num" style="color:var(--muted)">25% of bill</td></tr>
+          <tr><td>Recoverable savings potential</td><td class="num highlight">$4M+ / yr</td><td class="num" style="color:var(--muted)">75–80% addressable</td></tr>
+          <tr><td>Savings at +10% utilisation</td><td class="num highlight">$2.35M / yr</td><td class="num" style="color:var(--muted)">1,176 containers</td></tr>
+          <tr><td>Full-scale savings (92–95% util.)</td><td class="num highlight">$20–25M / yr</td><td class="num" style="color:var(--muted)">All 4 root causes</td></tr>
+          <tr><td>Freight cost as % of revenue</td><td class="num">8–12%</td><td class="num" style="color:var(--muted)">Mfg/export benchmark</td></tr>
+          <tr><td>Gross margin improvement</td><td class="num highlight">+0.8–1.2pp</td><td class="num" style="color:var(--muted)">$200M revenue base</td></tr>
+          <tr><td>Phase 3 EBITDA uplift</td><td class="num highlight">$4–5M</td><td class="num" style="color:var(--muted)">Freight + inventory</td></tr>
+          <tr style="font-weight:600"><td>Total system investment</td><td class="num neg">$1.2–1.4M</td><td class="num" style="color:var(--muted)">Tech+design+comm.</td></tr>
+          <tr style="font-weight:600"><td>18-month ROI</td><td class="num highlight">340–420%</td><td class="num" style="color:var(--muted)">Savings vs. invest.</td></tr>
+          <tr style="font-weight:600"><td>Payback period</td><td class="num highlight">7–9 months</td><td class="num" style="color:var(--muted)">From Phase 2 deploy</td></tr>
+          <tr class="total-row"><td>3-Year NPV</td><td class="num highlight">$9–11M</td><td class="num" style="color:var(--muted)">@10% discount rate</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-header" style="margin-bottom:16px">
+        <div>
+          <div class="chart-title" style="font-size:17px">Utilisation → Savings Curve</div>
+          <div class="chart-subtitle">Nonlinear: each 1% gain eliminates ~117 containers</div>
+        </div>
+      </div>
+      <div style="position:relative;width:100%;height:280px">
+        <canvas id="utilChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: PHASE TIMELINE ── -->
+  <hr class="divider"/>
+  <div class="fade-up" style="margin-bottom:24px">
+    <div class="section-label">05 — Execution Blueprint</div>
+    <div class="section-title">Phase-wise Financial Milestones</div>
+    <div class="section-desc">Phased investment structure ensures Phase 2 quick wins fund Phase 3 full rollout — controlled risk at every stage.</div>
+  </div>
+
+  <div class="phase-grid fade-up">
+    <div class="phase-card">
+      <div class="phase-header p1">
+        <div><div class="phase-name">Diagnose & Baseline</div><div class="phase-duration">Months 0–3</div></div>
+        <div class="phase-num">01</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-kpi"><span>Investment</span><span class="phase-kpi-val">~$150–200K</span></div>
+        <div class="phase-kpi"><span>Target util.</span><span class="phase-kpi-val">Baseline ~75%</span></div>
+        <div class="phase-kpi"><span>Revenue impact</span><span class="phase-kpi-val">$0</span></div>
+        <div class="phase-kpi"><span>Key output</span><span class="phase-kpi-val">3–5 pilot lanes</span></div>
+        <hr class="divider-light"/>
+        <div class="phase-actions">
+          <div class="phase-action">Lane-level utilisation dashboard via ERP/TMS data</div>
+          <div class="phase-action">SKU geometry audit: top 50 highest-volume products</div>
+          <div class="phase-action">Identify booking gap vs. container confirmation</div>
+          <div class="phase-action">Review contracts for consolidation penalties</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-header p2">
+        <div><div class="phase-name">High-ROI Pilots</div><div class="phase-duration">Months 3–9</div></div>
+        <div class="phase-num">02</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-kpi"><span>Investment</span><span class="phase-kpi-val">~$600–700K</span></div>
+        <div class="phase-kpi"><span>Target util.</span><span class="phase-kpi-val">85%+ on pilots</span></div>
+        <div class="phase-kpi"><span>Savings generated</span><span class="phase-kpi-val">$1.0–1.5M</span></div>
+        <div class="phase-kpi"><span>Payback trigger</span><span class="phase-kpi-val">Month 7–9</span></div>
+        <hr class="divider-light"/>
+        <div class="phase-actions">
+          <div class="phase-action">Deploy AI-powered 3D load optimisation on pilots</div>
+          <div class="phase-action">Redesign top 5 SKUs with geometry gaps above 25%</div>
+          <div class="phase-action">Integrate sales forecast data with booking systems</div>
+          <div class="phase-action">Renegotiate most constraining lane contract</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-header p3">
+        <div><div class="phase-name">Scale & Institutionalise</div><div class="phase-duration">Months 9–18</div></div>
+        <div class="phase-num">03</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-kpi"><span>Investment</span><span class="phase-kpi-val">~$450–500K</span></div>
+        <div class="phase-kpi"><span>Target util.</span><span class="phase-kpi-val">92–95% network</span></div>
+        <div class="phase-kpi"><span>Annual savings</span><span class="phase-kpi-val">$2.35M+</span></div>
+        <div class="phase-kpi"><span>Funded by</span><span class="phase-kpi-val">Phase 2 savings</span></div>
+        <hr class="divider-light"/>
+        <div class="phase-actions">
+          <div class="phase-action">Expand AI load optimization across entire network</div>
+          <div class="phase-action">Replace weekly meetings with demand sensing model</div>
+          <div class="phase-action">Formalize SKU redesign as a recurring programme</div>
+          <div class="phase-action">Publish CO₂ reduction as ESG metric (CBAM leverage)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: ESG + CBAM ── -->
+  <hr class="divider"/>
+  <div class="fade-up" style="margin-bottom:24px">
+    <div class="section-label">06 — ESG as a Financial Lever</div>
+    <div class="section-title">Carbon → Cash Linkage</div>
+    <div class="section-desc">Sustainability is not a PR initiative. Each container eliminated reduces Scope 3 emissions, creating measurable CBAM and carbon credit value.</div>
+  </div>
+
+  <div class="esg-panel fade-up">
+    <div class="esg-card">
+      <div class="esg-icon">🌿</div>
+      <div class="esg-label">CO₂ Avoided Annually</div>
+      <div class="esg-value g">2,940T</div>
+      <div class="esg-desc">At +10% utilisation. Basis: 2.5T CO₂ per TEU eliminated. 1,176 containers × 2.5T = 2,940T avoided per year.</div>
+    </div>
+    <div class="esg-card">
+      <div class="esg-icon">💰</div>
+      <div class="esg-label">Carbon Credit Value</div>
+      <div class="esg-value b">$147K</div>
+      <div class="esg-desc">Upper bound at full scale. Carbon credits at $30–50/tonne applied to 2,940T avoided = $88–147K annually. Direct P&L contribution.</div>
+    </div>
+    <div class="esg-card">
+      <div class="esg-icon">🇪🇺</div>
+      <div class="esg-label">CBAM Levy Reduction</div>
+      <div class="esg-value r">$200K</div>
+      <div class="esg-desc">EU Carbon Border Adjustment Mechanism. Exporters face carbon tariffs aligned to EU ETS price. Reduced Scope 3 directly lowers CBAM exposure by $120–200K/yr.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="fade-up">
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-title" style="font-size:17px;margin-bottom:4px">ESG Financial Contribution</div>
+      <div class="chart-subtitle" style="margin-bottom:16px">Additional annual value beyond direct freight savings</div>
+      <div style="position:relative;width:100%;height:220px">
+        <canvas id="esgChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-bottom:0">
+      <div class="chart-title" style="font-size:17px;margin-bottom:4px">Sensitivity Analysis</div>
+      <div class="chart-subtitle" style="margin-bottom:16px">Annual savings under different utilisation scenarios</div>
+      <div style="position:relative;width:100%;height:220px">
+        <canvas id="sensChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 7: TECH STACK ── -->
+  <hr class="divider"/>
+  <div class="fade-up" style="margin-bottom:24px">
+    <div class="section-label">07 — Technology Architecture</div>
+    <div class="section-title">Tech Stack & Platform Economics</div>
+    <div class="section-desc">The three recommended platforms and their financial linkage to each system layer. Technology choices are deliberately modular to avoid vendor lock-in.</div>
+  </div>
+
+  <div class="chart-card fade-up">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Platform</th>
+          <th>Core Function</th>
+          <th>Tech Stack</th>
+          <th>Waste Addressed</th>
+          <th>Financial Tie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>L3 — AI Load Opt.</strong><br/><span style="color:var(--muted);font-size:11px">Deploy first · Fastest ROI</span></td>
+          <td><span style="font-weight:600">3D Bin-Packing Engine</span><br/><span style="font-size:11px;color:var(--muted)">ERP/TMS-integrated</span></td>
+          <td>Real-time container loading simulation. Learns from each load via feedback loop.</td>
+          <td>
+            <span class="tech-pill hot">Python</span>
+            <span class="tech-pill hot">OR-Tools</span>
+            <span class="tech-pill cool">REST API</span>
+            <span class="tech-pill cool">SAP/Oracle TMS</span>
+            <span class="tech-pill go">Reinforcement Learning</span>
+          </td>
+          <td>Planning failure · 40% of waste</td>
+          <td style="font-family:var(--mono);font-size:12px;color:var(--green)">$2.0M / yr impact</td>
+        </tr>
+        <tr>
+          <td><strong>L2 — Design Opt.</strong><br/><span style="color:var(--muted);font-size:11px">Platform 1: EngView Systems</span></td>
+          <td><span style="font-weight:600">EngView Packaging Suite</span><br/><span style="font-size:11px;color:var(--muted)">Parametric box design</span></td>
+          <td>Input SKU dimensions → output mathematically optimal box geometry to minimise void space.</td>
+          <td>
+            <span class="tech-pill">CAD Engine</span>
+            <span class="tech-pill hot">Parametric Solver</span>
+            <span class="tech-pill cool">ERP Integration</span>
+            <span class="tech-pill">Void Map Generator</span>
+          </td>
+          <td>Product geometry · 35% of waste</td>
+          <td style="font-family:var(--mono);font-size:12px;color:var(--green)">$1.4M / yr impact</td>
+        </tr>
+        <tr>
+          <td><strong>L2 — Design Opt.</strong><br/><span style="color:var(--muted);font-size:11px">Platform 2: Spring by Sourceful</span></td>
+          <td><span style="font-weight:600">Sourceful Spring AI</span><br/><span style="font-size:11px;color:var(--muted)">Sustainable packaging AI</span></td>
+          <td>AI-generated packaging configs balancing material efficiency + stackability. Produces density gain + carbon reduction figure from one investment.</td>
+          <td>
+            <span class="tech-pill go">Generative AI</span>
+            <span class="tech-pill hot">Material DB</span>
+            <span class="tech-pill cool">ESG Reporting API</span>
+            <span class="tech-pill go">Stackability Model</span>
+          </td>
+          <td>Geometry + ESG dual output</td>
+          <td style="font-family:var(--mono);font-size:12px;color:var(--green)">+$88–147K carbon credits</td>
+        </tr>
+        <tr>
+          <td><strong>L1 — Demand Intel.</strong><br/><span style="color:var(--muted);font-size:11px">Demand sensing module</span></td>
+          <td><span style="font-weight:600">Demand Sensing Engine</span><br/><span style="font-size:11px;color:var(--muted)">Order-book synchronization</span></td>
+          <td>4–6 week forecasting horizon. Aligns booking windows with actual demand signals. Reduces partial containers by 30–40%.</td>
+          <td>
+            <span class="tech-pill hot">Time-series ML</span>
+            <span class="tech-pill cool">ERP Order Book API</span>
+            <span class="tech-pill">Contract Flex Signals</span>
+            <span class="tech-pill go">Prophet / ARIMA</span>
+          </td>
+          <td>Demand variability · 15% waste</td>
+          <td style="font-family:var(--mono);font-size:12px;color:var(--green)">$0.4M / yr impact</td>
+        </tr>
+        <tr>
+          <td><strong>L1 — Contract Opt.</strong><br/><span style="color:var(--muted);font-size:11px">Commercial layer</span></td>
+          <td><span style="font-weight:600">Contract Renegotiation</span><br/><span style="font-size:11px;color:var(--muted)">Sustainability partnership frame</span></td>
+          <td>Reframe volume commitments as sustainability partnerships. Remove consolidation penalties and fixed sailing clauses.</td>
+          <td>
+            <span class="tech-pill">Carrier Analytics</span>
+            <span class="tech-pill hot">Flexible Capacity</span>
+            <span class="tech-pill go">CBAM Framing</span>
+          </td>
+          <td>Contractual rigidity · 10% waste</td>
+          <td style="font-family:var(--mono);font-size:12px;color:var(--green)">$0.2M / yr impact</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── SECTION 8: RISK MATRIX ── -->
+  <hr class="divider"/>
+  <div class="fade-up" style="margin-bottom:24px">
+    <div class="section-label">08 — Risk-Adjusted Model</div>
+    <div class="section-title">Risks & Financial Mitigations</div>
+    <div class="section-desc">The financial model is stress-tested against implementation risk. Each mitigation reduces probability of value leakage.</div>
+  </div>
+
+  <div class="chart-card fade-up">
+    <table class="roi-table">
+      <thead>
+        <tr>
+          <th>Risk Factor</th>
+          <th>Financial Impact</th>
+          <th>Probability</th>
+          <th>Mitigation Strategy</th>
+          <th style="text-align:right">Value at Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Change resistance</strong><br/><span style="font-size:11px;color:var(--muted)">Slow ops team adoption</span></td>
+          <td>Delayed Phase 2 savings</td>
+          <td><span style="color:var(--gold);font-weight:600">Medium</span></td>
+          <td>Pilot success → demonstrate ROI → scale gradually. Champions within ops.</td>
+          <td class="num neg">$0.5–0.8M delay</td>
+        </tr>
+        <tr>
+          <td><strong>SKU redesign cost overrun</strong><br/><span style="font-size:11px;color:var(--muted)">L2 investment higher than modelled</span></td>
+          <td>Compresses net savings in Phase 2</td>
+          <td><span style="color:var(--green);font-weight:600">Low</span></td>
+          <td>Focus only on top 20% SKUs by volume. IKEA principle: small redesigns, big density gains.</td>
+          <td class="num neg">$0.1–0.2M</td>
+        </tr>
+        <tr>
+          <td><strong>AI vendor lock-in</strong><br/><span style="font-size:11px;color:var(--muted)">Single-platform dependency</span></td>
+          <td>Switching cost &gt; savings in year 3+</td>
+          <td><span style="color:var(--green);font-weight:600">Low</span></td>
+          <td>Open architecture + data ownership clauses in contract. API-first integration.</td>
+          <td class="num neg">$0.2–0.3M</td>
+        </tr>
+        <tr>
+          <td><strong>Forecast errors</strong><br/><span style="font-size:11px;color:var(--muted)">L1 demand signal inaccuracy</span></td>
+          <td>AI optimises wrong container size</td>
+          <td><span style="color:var(--gold);font-weight:600">Medium</span></td>
+          <td>Start with short 4-week windows. Expand horizon as model accuracy improves.</td>
+          <td class="num neg">$0.3–0.5M</td>
+        </tr>
+        <tr>
+          <td><strong>Geometric ceiling (L2 absent)</strong><br/><span style="font-size:11px;color:var(--muted)">L3 deployed without L2</span></td>
+          <td>AI hits hard ceiling at ~85% util.</td>
+          <td><span style="color:var(--accent);font-weight:600">High if partial</span></td>
+          <td>Must deploy L2 alongside L3 by month 6 latest. Critical interdependency — non-negotiable.</td>
+          <td class="num neg">$0.8–1.0M / yr</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>Risk-adjusted NPV floor</strong></td>
+          <td colspan="3">After accounting for all identified risks and mitigation costs</td>
+          <td class="num highlight">$7.5–9M (3-yr)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FINAL CALLOUT -->
+  <div class="fade-up" style="margin-top:40px;background:var(--ink);color:var(--paper);border-radius:6px;padding:36px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px">
+    <div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--accent);margin-bottom:8px">FINAL INSIGHT · BLACK CATS DBE · IIM BANGALORE</div>
+      <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1.3;max-width:600px">
+        "The question is not whether to optimise logistics — it is whether to <span style="color:var(--accent)">lead the transformation</span> or fall behind competitors."
+      </div>
+      <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:rgba(245,240,232,0.5)">Cost ↓ → Efficiency ↑ → Emissions ↓ → Advantage ↑</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;min-width:200px">
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:12px 16px">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(245,240,232,0.4);margin-bottom:4px">EBITDA UPLIFT</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#60D090;line-height:1">$4–5M</div>
+      </div>
+      <div style="background:var(--accent);border-radius:4px;padding:12px 16px">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.7);margin-bottom:4px">18-MONTH ROI</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;line-height:1">340–420%</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div>Black Cats DBE · Indian Institute of Management Bangalore · BBA(DBE)</div>
+  <div>Aarshabh Kalbele · Lakshya Madharia · Bramhaladitya Ramteke</div>
+  <div>BizRescue · NIT Raipur E-Summit '26</div>
+</footer>
+
+<script>
+// ── WATERFALL CHART ──
+(function() {
+  const ctx = document.getElementById('waterfallChart').getContext('2d');
+  const labels = ['Freight\nSpend', 'AI Load\nOpt. (L3)', 'Design\nOpt. (L2)', 'Demand\nSensing (L1)', 'Contract\nRenegotiation', 'Net Annual\nCost'];
+  const base = [20, 0, 0, 0, 0, 0];
+  const savings = [0, -2.0, -1.4, -0.6, -0.4, 0];
+  const net = [0, 0, 0, 0, 0, 15.6];
+  const colors = ['#C8391A','#1A7A4A','#1A7A4A','#1A7A4A','#1A7A4A','#D4960A'];
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Freight Spend', 'AI Load Opt. (L3)', 'Design Opt. (L2)', 'Demand Sensing', 'Contract Renegotiation', 'Net Annual Cost'],
+      datasets: [
+        {
+          label: 'Value',
+          data: [20, 2.0, 1.4, 0.6, 0.4, 15.6],
+          backgroundColor: ['#C8391A','#1A7A4A','#1A7A4A','#1A7A4A','#1A7A4A','#D4960A'],
+          borderRadius: 3,
+          borderSkipped: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const labels = ['Gross spend','AI packing savings','Design savings','Demand savings','Contract savings','Net annual cost'];
+              return labels[ctx.dataIndex] + ': $' + ctx.parsed.y.toFixed(1) + 'M';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          min: 0, max: 22,
+          ticks: { callback: v => '$' + v + 'M', font: { size: 11, family: 'DM Mono' } },
+          grid: { color: 'rgba(0,0,0,0.06)' }
+        },
+        x: {
+          ticks: { font: { size: 11 }, maxRotation: 0 },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+})();
+
+// ── UTILISATION CHART ──
+(function() {
+  const ctx = document.getElementById('utilChart').getContext('2d');
+  const utils = [75,78,80,82,84,85,87,88,90,92,93,95];
+  const savings = utils.map(u => ((u - 75) * 0.235).toFixed(2));
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: utils.map(u => u + '%'),
+      datasets: [{
+        label: 'Annual Savings ($M)',
+        data: savings,
+        borderColor: '#1A6BC8',
+        backgroundColor: 'rgba(26,107,200,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: '#1A6BC8'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => 'Savings: $' + ctx.parsed.y + 'M' } }
+      },
+      scales: {
+        y: {
+          ticks: { callback: v => '$' + v + 'M', font: { size: 11, family: 'DM Mono' } },
+          grid: { color: 'rgba(0,0,0,0.06)' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+})();
+
+// ── ESG CHART ──
+(function() {
+  const ctx = document.getElementById('esgChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Carbon Credits ($88–147K)', 'CBAM Reduction ($120–200K)', 'Scope 3 Brand Value ($est 100K)'],
+      datasets: [{
+        data: [117, 160, 100],
+        backgroundColor: ['#1A7A4A', '#1A6BC8', '#D4960A'],
+        borderWidth: 2,
+        borderColor: '#FAFAF5'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '62%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { size: 10, family: 'DM Mono' }, boxWidth: 10, padding: 12 }
+        },
+        tooltip: { callbacks: { label: ctx => ctx.label + ': ~$' + ctx.parsed + 'K' } }
+      }
+    }
+  });
+})();
+
+// ── SENSITIVITY CHART ──
+(function() {
+  const ctx = document.getElementById('sensChart').getContext('2d');
+  const scenarios = ['Bear\n(+5% util)', 'Base\n(+10% util)', 'Bull\n(+15% util)', 'Stretch\n(+20% util)'];
+  const values = [1.18, 2.35, 3.53, 4.70];
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Bear (+5%)', 'Base (+10%)', 'Bull (+15%)', 'Stretch (+20%)'],
+      datasets: [{
+        label: 'Annual Savings ($M)',
+        data: values,
+        backgroundColor: ['#888780', '#1A6BC8', '#1A7A4A', '#D4960A'],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => 'Savings: $' + ctx.parsed.y.toFixed(2) + 'M' } }
+      },
+      scales: {
+        y: {
+          ticks: { callback: v => '$' + v + 'M', font: { size: 11, family: 'DM Mono' } },
+          grid: { color: 'rgba(0,0,0,0.06)' }
+        },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+})();
+
+// ── SCROLL ANIMATIONS ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
